@@ -2,8 +2,8 @@ public class Controlador {
 
 
     private String nomeEquipe;
-    private int posicaoX;
-    private int posicaoY;
+    private int posicaoX = 0;
+    private int posicaoY = 0;
     private int[] direcao = {0, 1};
 
     private int quantidadeBarris = 0;
@@ -16,14 +16,30 @@ public class Controlador {
     }
 
 
-    public void anda(){
+    public void anda(Terreno terreno){
+
+
+        int largura = terreno.getLargura();
+        int comprimento = terreno.getComprimento();
 
         posicaoX += direcao[0];
         posicaoY += direcao[1];
 
+        if(posicaoX < 0)
+            posicaoX = 0;
+        if(posicaoY < 0)
+            posicaoY = 0;
+
+        if(posicaoX >= largura)
+            posicaoX = largura-1;
+        if(posicaoY >= comprimento)
+            posicaoY = comprimento-1;
+
+
     }
 
     public void esquerda(){
+
 
         int direcaoPrevia = direcao[0];
 
@@ -34,6 +50,7 @@ public class Controlador {
 
 
     public void direita(){
+
 
         int direcaoPrevia = direcao[1];
 
@@ -64,7 +81,7 @@ public class Controlador {
 
     public float sensorConcentracao(Terreno terreno){
 
-        return terreno.buscarCelula(posicaoX, posicaoY).concentraçãoHelio;
+        return terreno.buscarCelula(posicaoX, posicaoY).concentracaoHelio;
 
     }
 
@@ -75,20 +92,22 @@ public class Controlador {
     }
 
 
-    public int sensorTempo(Jogo mestre){
+    public int sensorTempo(int tempo){
 
-        return mestre.tempoDecorrido;
+        return tempo;
 
     }
 
 
     public void coleta(Terreno terreno){
 
-        float concentracaoHelio3 = terreno.buscarCelula(posicaoX, posicaoY).concentraçãoHelio;
+        float concentracaoHelio3 = terreno.buscarCelula(posicaoX, posicaoY).concentracaoHelio;
         float coeficienteErro = terreno.buscarCelula(posicaoX, posicaoY).coeficienteErro;
 
         quantidadeBarris += (int)(((1-coeficienteErro) * concentracaoHelio3) * 10);
 
+
     }
+
 
 }
