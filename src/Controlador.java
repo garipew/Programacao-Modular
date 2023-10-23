@@ -8,6 +8,10 @@ public class Controlador {
 
     private int quantidadeBarris = 0;
 
+    private String estado = "livre";
+
+    private int tempoInicioAcao = -1;
+
 
     public Controlador(String nomeEquipe){
 
@@ -16,8 +20,10 @@ public class Controlador {
     }
 
 
-    public void anda(Terreno terreno){
+    public void anda(Terreno terreno, int tempo){
 
+        estado = "andando";
+        tempoInicioAcao = tempo;
 
         int largura = terreno.getLargura();
         int comprimento = terreno.getComprimento();
@@ -38,8 +44,10 @@ public class Controlador {
 
     }
 
-    public void esquerda(){
+    public void esquerda(int tempo){
 
+        estado = "girando";
+        tempoInicioAcao = tempo;
 
         int direcaoPrevia = direcao[0];
 
@@ -49,8 +57,10 @@ public class Controlador {
     }
 
 
-    public void direita(){
+    public void direita(int tempo){
 
+        estado = "girando";
+        tempoInicioAcao = tempo;
 
         int direcaoPrevia = direcao[1];
 
@@ -79,6 +89,10 @@ public class Controlador {
         return quantidadeBarris;
     }
 
+    public String getEstado(){
+        return estado;
+    }
+
     public float sensorConcentracao(Terreno terreno){
 
         return terreno.buscarCelula(posicaoX, posicaoY).concentracaoHelio;
@@ -99,13 +113,74 @@ public class Controlador {
     }
 
 
-    public void coleta(Terreno terreno){
+    public void coleta(Terreno terreno, int tempo){
+
+        estado = "coletando";
+        tempoInicioAcao = tempo;
+
 
         float concentracaoHelio3 = terreno.buscarCelula(posicaoX, posicaoY).concentracaoHelio;
         float coeficienteErro = terreno.buscarCelula(posicaoX, posicaoY).coeficienteErro;
 
         quantidadeBarris += (int)(((1-coeficienteErro) * concentracaoHelio3) * 10);
 
+
+    }
+
+
+    public void atualizaAcao(Terreno mapa, String acao, int tempoDecorrido){
+
+        switch(acao){
+
+            case("anda"):
+                anda(mapa, tempoDecorrido);
+                break;
+            case("esquerda"):
+                esquerda(tempoDecorrido);
+                break;
+            case("direita"):
+                direita(tempoDecorrido);
+                break;
+            case("coleta"):
+                coleta(mapa, tempoDecorrido);
+                break;
+            case("sensores"):
+                System.out.printf("===========\n%d %d\n%.2f Concentração\n%.2f Rugosidade \n%d s\n==========\n",
+                        getPosicaoX(),
+                        getPosicaoY(),
+                        sensorConcentracao(mapa),
+                        sensorRugosidade(mapa),
+                        sensorTempo(tempoDecorrido));
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    public void atualizaEstado(int tempoDecorrido){
+
+
+        int duracaoAcao = 0;
+
+        switch(estado){
+            case "livre":
+                break;
+            case "andando":
+                duracaoAcao = 2;
+                break;
+            case "girando":
+                duracaoAcao = 1;
+                break;
+            case "coletando":
+                duracaoAcao = 4;
+                break;
+        }
+
+        if(tempoDecorrido >= tempoInicioAcao + duracaoAcao){
+            estado = "livre";
+            tempoInicioAcao = -1;
+        }
 
     }
 
