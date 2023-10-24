@@ -1,0 +1,7 @@
+{
+  "duracaoPartida": 100,
+  "jogadores": [
+    {"nomeEquipe": "Equipe Alfa", "posicaoX": 0, "posicaoY": 0},
+    {"nomeEquipe": "Equipe Beta", "posicaoX": 3, "posicaoY": 0}
+  ]
+}

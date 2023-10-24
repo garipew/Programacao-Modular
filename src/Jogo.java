@@ -1,3 +1,5 @@
+import netscape.javascript.JSObject;
+
 import java.util.Scanner;
 
 public class Jogo {
@@ -14,9 +16,11 @@ public class Jogo {
                 new Controlador("Equipe Beta", 0, 1)
         };
 
+        int duracaoPartida = 100;
+
+        Configuracoes configuracoes = new Configuracoes(duracaoPartida, jogadores);
 
         int tempoDecorrido = 0;
-        int duracaoPartida = 100;
 
         boolean gameLoop = true;
 
@@ -40,7 +44,7 @@ public class Jogo {
 
             System.out.printf("%d s\n", tempoDecorrido);
 
-            for (Controlador jogador : jogadores) {
+            for (Controlador jogador : configuracoes.getJogadores()) {
 
                 System.out.printf("%s\n%d Barril(s)\n", jogador.getNomeEquipe(), jogador.getQuantidadeBarris());
 
@@ -58,7 +62,7 @@ public class Jogo {
             }
 
             tempoDecorrido++;
-            if(tempoDecorrido > duracaoPartida)
+            if(tempoDecorrido > configuracoes.getDuracaoPartida())
                 gameLoop = false;
         }
 

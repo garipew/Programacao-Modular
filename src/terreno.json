@@ -1,0 +1,16 @@
+{
+  "celulas": [
+    {"X":0, "Y":0, "concentracaoHelio":0.2, "coeficienteErro":0.1, "rugosidade":0.5},
+    {"X":1, "Y":0, "concentracaoHelio":0.7, "coeficienteErro":0.7, "rugosidade":0.1},
+    {"X":2, "Y":0, "concentracaoHelio":0.1, "coeficienteErro":0.4, "rugosidade":0.6},
+    {"X":3, "Y":0, "concentracaoHelio":0.3, "coeficienteErro":0.1, "rugosidade":0.5},
+    {"X":4, "Y":0, "concentracaoHelio":0.8, "coeficienteErro":0.2, "rugosidade":0.3},
+    {"X":0, "Y":1, "concentracaoHelio":0.5, "coeficienteErro":0.6, "rugosidade":0.2},
+    {"X":1, "Y":1, "concentracaoHelio":0.2, "coeficienteErro":0.3, "rugosidade":0.7},
+    {"X":2, "Y":1, "concentracaoHelio":0.9, "coeficienteErro":0.7, "rugosidade":0.9},
+    {"X":3, "Y":1, "concentracaoHelio":0.6, "coeficienteErro":0.8, "rugosidade":0.8},
+    {"X":4, "Y":1, "concentracaoHelio":0.4, "coeficienteErro":0.5, "rugosidade":0.4}
+  ],
+  "comprimento": 2,
+  "largura": 5
+}
