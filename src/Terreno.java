@@ -26,7 +26,9 @@ public class Terreno {
 
         int i = 0;
 
-        while((celulas[i].coordenadaX != X) && (celulas[i].coordenadaY != Y)){
+        while(i < celulas.length){
+            if((celulas[i].getCoordenadaX() == X) && (celulas[i].getCoordenadaY() == Y))
+                break;
             i++;
         }
 

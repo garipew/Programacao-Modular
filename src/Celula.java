@@ -1,12 +1,34 @@
 public class Celula {
 
-    int coordenadaX;
-    int coordenadaY;
+    private int coordenadaX;
+    private int coordenadaY;
 
-    float concentracaoHelio;
-    float coeficienteErro;
-    float rugosidade;
+    private float concentracaoHelio;
+    private float coeficienteErro;
+    private float rugosidade;
 
+
+    public boolean celulaOcupada = false;
+
+    public float getRugosidade() {
+        return rugosidade;
+    }
+
+    public float getCoeficienteErro() {
+        return coeficienteErro;
+    }
+
+    public float getConcentracaoHelio() {
+        return concentracaoHelio;
+    }
+
+    public int getCoordenadaX() {
+        return coordenadaX;
+    }
+
+    public int getCoordenadaY() {
+        return coordenadaY;
+    }
 
     public Celula(int X, int Y, float concentracaoHelio, float coeficienteErro, float rugosidade){
 

@@ -13,14 +13,25 @@ public class Controlador {
     private int tempoInicioAcao = -1;
 
 
-    public Controlador(String nomeEquipe){
+    public Controlador(String nomeEquipe, int posicaoX, int posicaoY){
 
         this.nomeEquipe = nomeEquipe;
+        this.posicaoX = posicaoX;
+        this.posicaoY = posicaoY;
+
 
     }
 
 
     public void anda(Terreno terreno, int tempo){
+
+        Celula antigaCelula = terreno.buscarCelula(posicaoX, posicaoY);
+        Celula novaCelula;
+
+        int novaPosicaoX = posicaoX + direcao[0];
+        int novaPosicaoY = posicaoY + direcao[1];
+
+        novaCelula = terreno.buscarCelula(novaPosicaoX, novaPosicaoY);
 
         estado = "andando";
         tempoInicioAcao = tempo;
@@ -28,18 +39,26 @@ public class Controlador {
         int largura = terreno.getLargura();
         int comprimento = terreno.getComprimento();
 
-        posicaoX += direcao[0];
-        posicaoY += direcao[1];
 
-        if(posicaoX < 0)
-            posicaoX = 0;
-        if(posicaoY < 0)
-            posicaoY = 0;
+        if(novaPosicaoX < 0)
+            novaPosicaoX = 0;
+        if(novaPosicaoY < 0)
+            novaPosicaoY = 0;
 
-        if(posicaoX >= largura)
-            posicaoX = largura-1;
-        if(posicaoY >= comprimento)
-            posicaoY = comprimento-1;
+        if(novaPosicaoX >= largura)
+            novaPosicaoX = largura-1;
+        if(novaPosicaoY >= comprimento)
+            novaPosicaoY = comprimento-1;
+
+        if(!novaCelula.celulaOcupada){
+
+            novaCelula.celulaOcupada = true;
+            System.out.printf("%d %d OCUPADA\n", novaCelula.getCoordenadaX(), novaCelula.getCoordenadaY());
+            antigaCelula.celulaOcupada = false;
+
+            posicaoX = novaPosicaoX;
+            posicaoY = novaPosicaoY;
+        }
 
 
     }
@@ -95,13 +114,13 @@ public class Controlador {
 
     public float sensorConcentracao(Terreno terreno){
 
-        return terreno.buscarCelula(posicaoX, posicaoY).concentracaoHelio;
+        return terreno.buscarCelula(posicaoX, posicaoY).getConcentracaoHelio();
 
     }
 
     public float sensorRugosidade(Terreno terreno){
 
-        return terreno.buscarCelula(posicaoX, posicaoY).rugosidade;
+        return terreno.buscarCelula(posicaoX, posicaoY).getRugosidade();
 
     }
 
@@ -113,14 +132,25 @@ public class Controlador {
     }
 
 
+    public void sensores(Terreno mapa, int tempoDecorrido){
+        System.out.printf("===========\n%s\n%d %d\n%.2f Concentração\n%.2f Rugosidade \n%d s\n==========\n",
+                getNomeEquipe(),
+                getPosicaoX(),
+                getPosicaoY(),
+                sensorConcentracao(mapa),
+                sensorRugosidade(mapa),
+                sensorTempo(tempoDecorrido));
+    }
+
+
     public void coleta(Terreno terreno, int tempo){
 
         estado = "coletando";
         tempoInicioAcao = tempo;
 
 
-        float concentracaoHelio3 = terreno.buscarCelula(posicaoX, posicaoY).concentracaoHelio;
-        float coeficienteErro = terreno.buscarCelula(posicaoX, posicaoY).coeficienteErro;
+        float concentracaoHelio3 = terreno.buscarCelula(posicaoX, posicaoY).getConcentracaoHelio();
+        float coeficienteErro = terreno.buscarCelula(posicaoX, posicaoY).getCoeficienteErro();
 
         quantidadeBarris += (int)(((1-coeficienteErro) * concentracaoHelio3) * 10);
 
@@ -144,17 +174,10 @@ public class Controlador {
             case("coleta"):
                 coleta(mapa, tempoDecorrido);
                 break;
-            case("sensores"):
-                System.out.printf("===========\n%d %d\n%.2f Concentração\n%.2f Rugosidade \n%d s\n==========\n",
-                        getPosicaoX(),
-                        getPosicaoY(),
-                        sensorConcentracao(mapa),
-                        sensorRugosidade(mapa),
-                        sensorTempo(tempoDecorrido));
-                break;
             default:
                 break;
         }
+
     }
 
 

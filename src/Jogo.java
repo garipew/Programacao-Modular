@@ -9,61 +9,60 @@ public class Jogo {
 
         Terreno mapa = new Terreno(celulas, 5, 2);
 
-        Controlador robo = new Controlador("Equipe Alfa");
+        Controlador[] jogadores = {
+                new Controlador("Equipe Alfa", 0, 0),
+                new Controlador("Equipe Beta", 0, 1)
+        };
 
-        Controlador robo2 = new Controlador("Equipe Beta");
 
         int tempoDecorrido = 0;
         int duracaoPartida = 100;
 
         boolean gameLoop = true;
 
-        String acao = " ";
+        String acao;
 
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("\t\tControles\n" +
-                "====================\n" +
-                "'anda' -> Caminha na direção que esta olhando\n" +
-                "'esquerda' -> Gira 90º à esquerda\n" +
-                "'direita' -> Gira 90º à direita\n" +
-                "'coleta' -> Coleta o Hélio-3 disponível\n" +
-                "'sensores' -> Ativa todos os sensores\n" +
-                "'sair' -> Encerra o jogo\n" +
-                "=====================\n");
+        System.out.print("""
+                \t\tControles
+                ====================
+                'anda' -> Caminha na direção que esta olhando
+                'esquerda' -> Gira 90º à esquerda
+                'direita' -> Gira 90º à direita
+                'coleta' -> Coleta o Hélio-3 disponível
+                'sensores' -> Ativa todos os sensores
+                'sair' -> Encerra o jogo
+                =====================
+                """);
 
         while(gameLoop){
 
-            System.out.printf("%d s\n%d Barril(s) %s\n%d Barril(s) %s\n",
-                    tempoDecorrido, robo.getQuantidadeBarris(), robo.getNomeEquipe(),
-                    robo2.getQuantidadeBarris(), robo2.getNomeEquipe());
+            System.out.printf("%d s\n", tempoDecorrido);
 
-            if(robo.getEstado().equals("livre")){
-                System.out.printf("Digite a proxima ação %s: ", robo.getNomeEquipe());
-                acao = sc.nextLine();
-                if(acao.equals("sair"))
-                    break;
-                robo.atualizaAcao(mapa, acao, tempoDecorrido);
+            for (Controlador jogador : jogadores) {
+
+                System.out.printf("%s\n%d Barril(s)\n", jogador.getNomeEquipe(), jogador.getQuantidadeBarris());
+
+                if (jogador.getEstado().equals("livre")) {
+                    jogador.sensores(mapa, tempoDecorrido);
+                    System.out.print("Digite a proxima ação: ");
+                    acao = sc.nextLine();
+                    if (acao.equals("sair"))
+                        System.exit(-1);
+                    jogador.atualizaAcao(mapa, acao, tempoDecorrido);
+                }
+
+                jogador.atualizaEstado(tempoDecorrido);
+
             }
 
-            if(robo2.getEstado().equals("livre")){
-                System.out.printf("Digite a proxima ação %s: ", robo2.getNomeEquipe());
-                acao = sc.nextLine();
-                if(acao.equals("sair"))
-                    break;
-                robo2.atualizaAcao(mapa, acao, tempoDecorrido);
-            }
-
-
-            acao = " ";
             tempoDecorrido++;
-            robo.atualizaEstado(tempoDecorrido);
-            robo2.atualizaEstado(tempoDecorrido);
             if(tempoDecorrido > duracaoPartida)
                 gameLoop = false;
         }
 
-        System.out.printf("%d Barril(s)\n", robo.getQuantidadeBarris());
+
     }
 
 }
