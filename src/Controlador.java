@@ -133,13 +133,15 @@ public class Controlador {
 
 
     public void sensores(Terreno mapa, int tempoDecorrido){
-        System.out.printf("===========\n%s\n%d %d\n%.2f Concentração\n%.2f Rugosidade \n%d s\n==========\n",
+        System.out.printf("===========\n%s\n%d %d\n%.2f Concentração\n%.2f Rugosidade \n%d s\nOlhando para: %d %d\n==========\n",
                 getNomeEquipe(),
                 getPosicaoX(),
                 getPosicaoY(),
                 sensorConcentracao(mapa),
                 sensorRugosidade(mapa),
-                sensorTempo(tempoDecorrido));
+                sensorTempo(tempoDecorrido),
+                direcao[0],
+                direcao[1]);
     }
 
 
