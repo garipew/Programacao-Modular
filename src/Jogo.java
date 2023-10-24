@@ -1,5 +1,3 @@
-import netscape.javascript.JSObject;
-
 import java.util.Scanner;
 
 public class Jogo {
